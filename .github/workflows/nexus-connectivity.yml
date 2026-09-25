@@ -1,0 +1,25 @@
+name: Nexus connectivity check
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Authenticate to Nexus Repository Cloud
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Check out demo
+        uses: actions/checkout@v4
+
+      - name: Check Nexus connectivity and authentication
+        env:
+          NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+          NEXUS_TOKEN: ${{ secrets.NEXUS_TOKEN }}
+        run: ./scripts/check-nexus.sh
