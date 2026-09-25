@@ -23,3 +23,9 @@ jobs:
           NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
           NEXUS_TOKEN: ${{ secrets.NEXUS_TOKEN }}
         run: ./scripts/check-nexus.sh
+
+      - name: Publish demo package to raw repository
+        env:
+          NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+          NEXUS_TOKEN: ${{ secrets.NEXUS_TOKEN }}
+        run: ./scripts/publish-raw-demo.sh

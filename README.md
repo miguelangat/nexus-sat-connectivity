@@ -1,6 +1,6 @@
 # Nexus Service Account Token Connectivity
 
-Minimal GitHub Actions demo that checks HTTPS connectivity and authenticates to a Nexus Repository Cloud instance with a Sonatype service account token (SAT).
+Minimal GitHub Actions demo that checks HTTPS connectivity, authenticates to a Nexus Repository Cloud instance with a Sonatype service account token (SAT), and publishes a small demo archive to the hosted `raw` repository.
 
 **Target:** [sonatype.dev.repo.saas.sonatype.dev](https://sonatype.dev.repo.saas.sonatype.dev/)
 
@@ -14,7 +14,15 @@ The workflow calls the Nexus REST API root using HTTP Basic authentication. It e
    - `NEXUS_TOKEN`: the complete service account token beginning with `sat.`
 3. Open **Actions → Nexus connectivity check → Run workflow**. It also runs on pushes to the default branch.
 
-The workflow never prints credentials or sends them to an untrusted action. It prints the HTTP status and response content type only. A successful authenticated request indicates connectivity and authentication; a 401 usually means the credentials were rejected, while DNS/TLS/timeout errors indicate a network or endpoint issue.
+Each successful run uploads `nexus-sat-connectivity-demo.tar.gz` to:
+
+```
+https://sonatype.dev.repo.saas.sonatype.dev/repository/raw/connectivity-demo/github-actions/<run-id>-<attempt>/nexus-sat-connectivity-demo.tar.gz
+```
+
+The unique run path avoids overwriting prior demo packages. The archive contains this README and a small text manifest with the workflow run ID and timestamp.
+
+The workflow never prints credentials or sends them to an untrusted action. It prints the HTTP status and response content type only. A successful authenticated request indicates connectivity and authentication; a 401 usually means the credentials were rejected, while DNS/TLS/timeout errors indicate a network or endpoint issue. Publishing also requires the token to have upload permission on the `raw` hosted repository.
 
 ## Local check
 
